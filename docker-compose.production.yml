@@ -8,6 +8,8 @@ services:
       ALLOWED_SENDER_DOMAINS: ${ALLOWED_SENDER_DOMAINS:?required}
       DKIM_AUTOGENERATE: "true"
       POSTFIX_myhostname: ${MAILRELAY_HOSTNAME:?required}
+      POSTFIX_smtpd_tls_security_level: none
+      POSTFIX_inet_protocols: ipv4
     volumes:
       - ./.docker/mailrelay/data:/etc/opendkim/keys
     networks:
