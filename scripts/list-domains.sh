@@ -52,7 +52,7 @@ show_domain() {
   echo "  _dmarc.$DOMAIN  TXT  \"${DMARC_RECORD}\""
   echo
   echo "DKIM:"
-  KEY_FILE="${DATA_DIR}/${DOMAIN}/mail.txt"
+  KEY_FILE="${DATA_DIR}/${DOMAIN}.txt"
   if [ -f "$KEY_FILE" ]; then
     echo "  Selector : mail"
     echo "  Record   : mail._domainkey.$DOMAIN"
@@ -60,7 +60,7 @@ show_domain() {
     cat "$KEY_FILE"
   else
     echo "  ⚠️  Key henüz üretilmedi."
-    echo "  cat ${DATA_DIR}/${DOMAIN}/mail.txt"
+    echo "  cat ${DATA_DIR}/${DOMAIN}.txt"
   fi
   echo "==============================================="
 }

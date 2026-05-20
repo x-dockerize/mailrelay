@@ -71,14 +71,13 @@ echo "✅ '$REMOVE_DOMAIN' listeden çıkarıldı."
 # --------------------------------------------------
 # DKIM Key Silme
 # --------------------------------------------------
-KEY_DIR="${DATA_DIR}/${REMOVE_DOMAIN}"
-if [ -d "$KEY_DIR" ]; then
-  read -rp "DKIM key'leri de silinsin mi? ($KEY_DIR) [e/H]: " DELETE_KEYS
+if ls "${DATA_DIR}/${REMOVE_DOMAIN}".* > /dev/null 2>&1; then
+  read -rp "DKIM key'leri de silinsin mi? (${DATA_DIR}/${REMOVE_DOMAIN}.*) [e/H]: " DELETE_KEYS
   if [[ "$DELETE_KEYS" =~ ^[Ee]$ ]]; then
-    rm -rf "$KEY_DIR"
+    rm -f "${DATA_DIR}/${REMOVE_DOMAIN}".*
     echo "✅ DKIM key'leri silindi."
   else
-    echo "ℹ️  DKIM key'leri korundu: $KEY_DIR"
+    echo "ℹ️  DKIM key'leri korundu."
   fi
 fi
 

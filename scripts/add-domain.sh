@@ -70,7 +70,7 @@ if docker inspect mailrelay > /dev/null 2>&1; then
   echo "⏳ DKIM key üretimi bekleniyor..."
   sleep 5
 
-  KEY_FILE="${DATA_DIR}/${NEW_DOMAIN}/mail.txt"
+  KEY_FILE="${DATA_DIR}/${NEW_DOMAIN}.txt"
   ATTEMPTS=0
   while [ ! -f "$KEY_FILE" ] && [ "$ATTEMPTS" -lt 12 ]; do
     sleep 5
@@ -78,7 +78,7 @@ if docker inspect mailrelay > /dev/null 2>&1; then
   done
 else
   echo "ℹ️  mailrelay container çalışmıyor. DNS kayıtları container başladıktan sonra alınabilir:"
-  echo "   cat ${DATA_DIR}/${NEW_DOMAIN}/mail.txt"
+  echo "   cat ${DATA_DIR}/${NEW_DOMAIN}.txt"
 fi
 
 # --------------------------------------------------
@@ -111,7 +111,7 @@ echo "DMARC:"
 echo "  _dmarc.$NEW_DOMAIN  TXT  \"${DMARC_RECORD}\""
 echo
 echo "DKIM:"
-KEY_FILE="${DATA_DIR}/${NEW_DOMAIN}/mail.txt"
+KEY_FILE="${DATA_DIR}/${NEW_DOMAIN}.txt"
 if [ -f "$KEY_FILE" ]; then
   echo "  Selector : mail"
   echo "  Record   : mail._domainkey.$NEW_DOMAIN"
@@ -119,6 +119,6 @@ if [ -f "$KEY_FILE" ]; then
   cat "$KEY_FILE"
 else
   echo "  ⚠️  Key henüz üretilmedi. Container başladıktan sonra:"
-  echo "  cat ${DATA_DIR}/${NEW_DOMAIN}/mail.txt"
+  echo "  cat ${DATA_DIR}/${NEW_DOMAIN}.txt"
 fi
 echo "==============================================="
