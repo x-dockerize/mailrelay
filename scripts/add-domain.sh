@@ -84,7 +84,16 @@ fi
 # --------------------------------------------------
 # Sunucu IP
 # --------------------------------------------------
-SERVER_IP=$(curl -sf --max-time 5 https://ifconfig.me 2>/dev/null || echo "<SUNUCU_IP>")
+SERVER_IPV4=$(curl -sf --max-time 5 -4 https://ifconfig.me 2>/dev/null || true)
+SERVER_IPV6=$(curl -sf --max-time 5 -6 https://ifconfig.me 2>/dev/null || true)
+
+if [ -n "$SERVER_IPV4" ]; then
+  SPF_IP="ip4:${SERVER_IPV4}"
+elif [ -n "$SERVER_IPV6" ]; then
+  SPF_IP="ip6:${SERVER_IPV6}"
+else
+  SPF_IP="ip4:<SUNUCU_IP>"
+fi
 
 # --------------------------------------------------
 # DNS Kayıtları
@@ -94,7 +103,7 @@ echo "==============================================="
 echo "📋 $NEW_DOMAIN için DNS kayıtları"
 echo "-----------------------------------------------"
 echo "SPF:"
-echo "  $NEW_DOMAIN  TXT  \"v=spf1 ip4:${SERVER_IP} ~all\""
+echo "  $NEW_DOMAIN  TXT  \"v=spf1 ${SPF_IP} ~all\""
 echo
 echo "DMARC:"
 echo "  _dmarc.$NEW_DOMAIN  TXT  \"v=DMARC1; p=quarantine; rua=mailto:postmaster@$NEW_DOMAIN\""
