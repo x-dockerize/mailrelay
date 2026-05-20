@@ -7,5 +7,4 @@
 /.nova
 /.vscode
 /.zed
-/.docker
 docker-compose.yml
