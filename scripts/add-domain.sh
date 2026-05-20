@@ -113,12 +113,10 @@ echo
 echo "DKIM:"
 KEY_FILE="${DATA_DIR}/${NEW_DOMAIN}.txt"
 if [ -f "$KEY_FILE" ]; then
-  echo "  Selector : mail"
-  echo "  Record   : mail._domainkey.$NEW_DOMAIN"
-  echo
-  cat "$KEY_FILE"
+  DKIM_VALUE=$(grep -oE '"[^"]*"' "$KEY_FILE" | tr -d '"' | tr -d '\n')
+  echo "  mail._domainkey.$NEW_DOMAIN  TXT  \"${DKIM_VALUE}\""
 else
   echo "  ⚠️  Key henüz üretilmedi. Container başladıktan sonra:"
-  echo "  cat ${DATA_DIR}/${NEW_DOMAIN}.txt"
+  echo "  ./scripts/list-domains.sh"
 fi
 echo "==============================================="

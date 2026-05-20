@@ -54,10 +54,8 @@ show_domain() {
   echo "DKIM:"
   KEY_FILE="${DATA_DIR}/${DOMAIN}.txt"
   if [ -f "$KEY_FILE" ]; then
-    echo "  Selector : mail"
-    echo "  Record   : mail._domainkey.$DOMAIN"
-    echo
-    cat "$KEY_FILE"
+    DKIM_VALUE=$(grep -oE '"[^"]*"' "$KEY_FILE" | tr -d '"' | tr -d '\n')
+    echo "  mail._domainkey.$DOMAIN  TXT  \"${DKIM_VALUE}\""
   else
     echo "  ⚠️  Key henüz üretilmedi."
     echo "  cat ${DATA_DIR}/${DOMAIN}.txt"
