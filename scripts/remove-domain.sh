@@ -16,7 +16,7 @@ fi
 # --------------------------------------------------
 # Domain Girişi
 # --------------------------------------------------
-CURRENT_DOMAINS=$(grep "^ALLOWED_SENDER_DOMAINS=" "$ENV_FILE" | cut -d'=' -f2-)
+CURRENT_DOMAINS=$(grep -a "^ALLOWED_SENDER_DOMAINS=" "$ENV_FILE" | cut -d'=' -f2- | tr -d '\r')
 
 if [ -z "$CURRENT_DOMAINS" ]; then
   echo "ℹ️  ALLOWED_SENDER_DOMAINS listesi boş."
@@ -62,7 +62,7 @@ for DOMAIN in $CURRENT_DOMAINS; do
   fi
 done
 
-if grep -q "^ALLOWED_SENDER_DOMAINS=" "$ENV_FILE"; then
+if grep -qa "^ALLOWED_SENDER_DOMAINS=" "$ENV_FILE"; then
   sed -i "s|^ALLOWED_SENDER_DOMAINS=.*|ALLOWED_SENDER_DOMAINS=${UPDATED_DOMAINS}|" "$ENV_FILE"
 fi
 

@@ -20,7 +20,7 @@ set_env() {
   local key="$1"
   local value="$2"
 
-  if grep -q "^${key}=" "$ENV_FILE"; then
+  if grep -qa "^${key}=" "$ENV_FILE"; then
     sed -i "s|^${key}=.*|${key}=${value}|" "$ENV_FILE"
   else
     echo "${key}=${value}" >> "$ENV_FILE"
@@ -40,7 +40,7 @@ fi
 # --------------------------------------------------
 # Duplicate Kontrolü
 # --------------------------------------------------
-CURRENT_DOMAINS=$(grep "^ALLOWED_SENDER_DOMAINS=" "$ENV_FILE" | cut -d'=' -f2-)
+CURRENT_DOMAINS=$(grep -a "^ALLOWED_SENDER_DOMAINS=" "$ENV_FILE" | cut -d'=' -f2- | tr -d '\r')
 
 for DOMAIN in $CURRENT_DOMAINS; do
   if [ "$DOMAIN" = "$NEW_DOMAIN" ]; then
