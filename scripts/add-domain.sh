@@ -102,8 +102,13 @@ echo "-----------------------------------------------"
 echo "SPF:"
 echo "  $NEW_DOMAIN  TXT  \"v=spf1 ${SPF_PARTS} ~all\""
 echo
+DMARC_RUA=$(grep -a "^DMARC_RUA=" "$ENV_FILE" | cut -d'=' -f2- | tr -d '\r')
+
+DMARC_RECORD="v=DMARC1; p=quarantine"
+[ -n "$DMARC_RUA" ] && DMARC_RECORD="${DMARC_RECORD}; rua=mailto:${DMARC_RUA}"
+
 echo "DMARC:"
-echo "  _dmarc.$NEW_DOMAIN  TXT  \"v=DMARC1; p=quarantine; rua=mailto:postmaster@$NEW_DOMAIN\""
+echo "  _dmarc.$NEW_DOMAIN  TXT  \"${DMARC_RECORD}\""
 echo
 echo "DKIM:"
 KEY_FILE="${DATA_DIR}/${NEW_DOMAIN}/mail.txt"
