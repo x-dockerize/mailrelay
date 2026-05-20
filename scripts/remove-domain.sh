@@ -1,8 +1,9 @@
 #!/usr/bin/env bash
 set -e
 
-ENV_FILE="../.env"
-DATA_DIR="../.docker/mailrelay/data"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+ENV_FILE="$SCRIPT_DIR/../.env"
+DATA_DIR="$SCRIPT_DIR/../.docker/mailrelay/data"
 
 # --------------------------------------------------
 # Kontroller
@@ -86,7 +87,7 @@ fi
 # --------------------------------------------------
 if docker inspect mailrelay > /dev/null 2>&1; then
   echo "🔄 mailrelay container yeniden oluşturuluyor..."
-  docker compose -f ../docker-compose.yml up -d mailrelay
+  docker compose -f "$SCRIPT_DIR/../docker-compose.yml" up -d mailrelay
   echo "✅ Container yeniden oluşturuldu."
 else
   echo "ℹ️  mailrelay container çalışmıyor, değişiklik bir sonraki başlatmada geçerli olur."
